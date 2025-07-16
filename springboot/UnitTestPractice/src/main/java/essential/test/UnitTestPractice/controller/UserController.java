@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import essential.test.UnitTestPractice.dto.request.UserRequest;
 import essential.test.UnitTestPractice.dto.response.BaseResponse;
 import essential.test.UnitTestPractice.dto.response.UserResponse;
 import essential.test.UnitTestPractice.entity.User;
@@ -43,10 +44,10 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<BaseResponse<UserResponse>> createUser(@RequestBody User user) {
-        User created = userService.createUser(user);
-        UserResponse responseDto = userMapper.toDto(created);
-        BaseResponse<UserResponse> response = new BaseResponse<>(true, "User created", responseDto);
+    public ResponseEntity<BaseResponse<UserResponse>> createUser(@RequestBody UserRequest userRequest) {
+        User user = userService.createUser(userRequest);
+        UserResponse userResponse = userMapper.toDto(user);
+        BaseResponse<UserResponse> response = new BaseResponse<>(true, "User created successfully", userResponse);
         return ResponseEntity.ok(response);
     }
 

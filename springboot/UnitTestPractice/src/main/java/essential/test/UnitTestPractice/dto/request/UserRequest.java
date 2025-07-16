@@ -1,4 +1,4 @@
-package essential.test.UnitTestPractice.dto.response;
+package essential.test.UnitTestPractice.dto.request;
 
 import java.util.List;
 
@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponse {
+public class UserRequest {
     private int id;
     private String name;
-    private List<OrderResponse> orders;
+    private List<OrderRequest> orders;
 }
-

@@ -1,12 +1,16 @@
 package essential.test.UnitTestPractice.service.implement;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import essential.test.UnitTestPractice.dto.request.UserRequest;
+import essential.test.UnitTestPractice.entity.Order;
 import essential.test.UnitTestPractice.entity.User;
 import essential.test.UnitTestPractice.repository.UserRepository;
 import essential.test.UnitTestPractice.service.UserService;
+import jakarta.transaction.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,8 +32,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(User user) {
-        return userRepository.save(user);
+    @Transactional
+    public User createUser(UserRequest userRequest) {
+        User user = new User();
+        user.setName(userRequest.getName());
+
+        if (userRequest.getOrders() != null) {
+            List<Order> orders = userRequest.getOrders().stream().map(orderReq -> {
+                Order order = new Order();
+                order.setProductName(orderReq.getProductName());
+                order.setQuantity(orderReq.getQuantity());
+                order.setUser(user);
+                return order;
+            }).collect(Collectors.toList());
+            user.setOrders(orders);
+        }
+
+        User savedUser = userRepository.save(user);
+        return savedUser;
     }
 
     @Override
