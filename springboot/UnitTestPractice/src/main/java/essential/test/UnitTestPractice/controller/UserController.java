@@ -3,6 +3,7 @@ package essential.test.UnitTestPractice.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import essential.test.UnitTestPractice.dto.request.UserRequest;
@@ -44,7 +45,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<BaseResponse<UserResponse>> createUser(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<BaseResponse<UserResponse>> createUser(@Validated(UserRequest.Create.class) @RequestBody UserRequest userRequest) {
         User user = userService.createUser(userRequest);
         UserResponse userResponse = userMapper.toDto(user);
         BaseResponse<UserResponse> response = new BaseResponse<>(true, "User created successfully", userResponse);
